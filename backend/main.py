@@ -34,6 +34,16 @@ CSV_PATH = os.path.join(PROJECT_ROOT, 'data', 'synthetic_insider_logs.csv')
 FEATURES_PATH = os.path.join(PROJECT_ROOT, 'data', 'features.csv')
 ALERTS_PATH = os.path.join(PROJECT_ROOT, 'alerts_log.csv')
 
+# Recursive helper to clean NaNs and Infs for JSON compliance
+def clean_nans(obj):
+    if isinstance(obj, list):
+        return [clean_nans(item) for item in obj]
+    elif isinstance(obj, dict):
+        return {k: clean_nans(v) for k, v in obj.items()}
+    elif isinstance(obj, float) and (np.isnan(obj) or np.isinf(obj)):
+        return None
+    return obj
+
 # Pydantic schema for simulating new activity
 class ActivityRow(BaseModel):
     user_id: str
@@ -121,18 +131,15 @@ def get_user_activity(user_id: str):
         user_features = user_features.sort_values(by='date')
         user_logs = user_logs.sort_values(by=['date', 'login_time'])
         
-        # Clean up NaNs before returning JSON
-        user_features = user_features.replace({np.nan: None})
-        user_logs = user_logs.replace({np.nan: None})
-        
         # Metadata header
         user_meta = user_features.iloc[0][['user_id', 'name', 'department', 'role']].to_dict()
         
-        return {
+        payload = {
             "metadata": user_meta,
             "daily_activity": user_features.to_dict(orient='records'),
             "raw_sessions": user_logs.to_dict(orient='records')
         }
+        return clean_nans(payload)
     except HTTPException as he:
         raise he
     except Exception as e:
@@ -145,8 +152,7 @@ def get_alerts():
             df_alerts = pd.read_csv(ALERTS_PATH)
             # Sort newest alerts first
             df_alerts = df_alerts.sort_values(by='alert_timestamp', ascending=False)
-            df_alerts = df_alerts.replace({np.nan: None})
-            return df_alerts.to_dict(orient='records')
+            return clean_nans(df_alerts.to_dict(orient='records'))
         else:
             return []
     except Exception as e:
@@ -230,13 +236,9 @@ def get_user_report(user_id: str):
         user_features = user_features.sort_values(by='date')
         user_logs = user_logs.sort_values(by=['date', 'login_time'])
         
-        # Clean up NaNs before passing to PDF generator
-        user_features = user_features.replace({np.nan: None})
-        user_logs = user_logs.replace({np.nan: None})
-        
-        user_meta = user_features.iloc[0][['user_id', 'name', 'department', 'role']].to_dict()
-        daily_activity = user_features.to_dict(orient='records')
-        raw_sessions = user_logs.to_dict(orient='records')
+        user_meta = clean_nans(user_features.iloc[0][['user_id', 'name', 'department', 'role']].to_dict())
+        daily_activity = clean_nans(user_features.to_dict(orient='records'))
+        raw_sessions = clean_nans(user_logs.to_dict(orient='records'))
         
         # Generate the file path for saving the report
         reports_dir = os.path.join(PROJECT_ROOT, 'data', 'reports')
