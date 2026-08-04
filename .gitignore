@@ -1,0 +1,37 @@
+# Python Virtual Environment
+.venv/
+venv/
+ENV/
+ENV/
+bin/
+lib/
+include/
+
+# Node Package Manager modules
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Pycache and CPython artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDE settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# System Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini

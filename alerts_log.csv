@@ -1,0 +1,8 @@
+alert_timestamp,user_id,name,department,role,date,risk_score,risk_level,application_used,files_accessed,login_hour_dev,data_zscore,files_outside_pct
+2026-08-04 16:48:02,EMP001,Allison Hill,Finance,Finance Manager,2026-06-02,100.0,High,USB Mass Storage,active_directory_master_passwords.kdbx,4.818,7.218,0.143
+2026-08-04 17:00:14,EMP001,Allison Hill,Finance,Finance Manager,2026-06-02,100.0,High,USB Mass Storage,active_directory_master_passwords.kdbx,4.818,7.218,0.143
+2026-08-04 17:07:24,EMP001,Allison Hill,Finance,Finance Manager,2026-08-04,100.0,High,USB Mass Storage,enterprise_customer_contact_list.xlsx,1.579,7.648,0.5
+2026-08-04 17:07:31,EMP001,Allison Hill,Finance,Finance Manager,2026-08-04,100.0,High,Terminal,active_directory_master_passwords.kdbx,4.105,7.796,0.667
+2026-08-04 17:26:03,EMP01,Jamie Chavez,HR,HR Manager,2026-08-04,,High,USB Mass Storage,enterprise_customer_contact_list.xlsx,0.0,,1.0
+2026-08-04 17:26:12,EMP013,Jamie Chavez,HR,HR Manager,2026-08-04,100.0,High,USB Mass Storage,enterprise_customer_contact_list.xlsx,3.211,7.39,1.0
+2026-08-04 17:26:21,EMP013,Jamie Chavez,HR,HR Manager,2026-08-04,100.0,High,Chrome,employee_handbook.pdf,1.316,7.394,0.5
